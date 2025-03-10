@@ -44,12 +44,16 @@ class JwtTokenMiddleware
             // Attach payload to the request for use in controllers
             $request->attributes->set('jwt_payload', $payload);
         } catch (TokenExpiredException $e) {
+
             return response()->json(['message' => 'Token has expired'], 401);
         } catch (TokenInactiveException $e) {
+
             return response()->json(['message' => 'Token is not yet active'], 401);
         } catch (IntegrityViolationException | AlgorithmMismatchException $e) {
+
             return response()->json(['message' => 'Invalid token'], 401);
         } catch (\Exception $e) {
+
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
