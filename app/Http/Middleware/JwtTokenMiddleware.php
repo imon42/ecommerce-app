@@ -43,7 +43,6 @@ class JwtTokenMiddleware
 
             // Attach payload to the request for use in controllers
             $request->attributes->set('jwt_payload', $payload);
-
         } catch (TokenExpiredException $e) {
             return response()->json(['message' => 'Token has expired'], 401);
         } catch (TokenInactiveException $e) {
