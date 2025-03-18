@@ -42,7 +42,9 @@ const Dashboard = () => {
     const handleNoticeChange = (event) => {
         setNotice({
             ...notice,
+            image : event?.target?.files?.[0],
             [event.target.name]: event.target.value,
+
         });
     };
 
@@ -52,7 +54,11 @@ const Dashboard = () => {
         try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/api/create-notice",
-                notice,
+                notice,{
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
             );
             console.log( response?.data.notice );
 
@@ -131,6 +137,15 @@ const Dashboard = () => {
                         type="text"
                         name="notice"
                         value={notice.notice}
+                        onChange={handleNoticeChange}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel>Upload File</FormLabel>
+                    <Input
+                        type="file"
+                        name="file"
+                        accept="image/*"
                         onChange={handleNoticeChange}
                     />
                 </FormControl>

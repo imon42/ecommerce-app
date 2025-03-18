@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('notice_from_admins', function (Blueprint $table) {
             $table->id();
             $table->string('notice');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }

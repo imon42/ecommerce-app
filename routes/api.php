@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/create-notice', [NoticeController::class, 'createNotice']);
+
 Route::get('/notice', [NoticeController::class, 'displayNotice']);
 
 Route::get('/send-notification', [NoticeController::class, 'sendNotification']);

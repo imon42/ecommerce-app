@@ -14,20 +14,26 @@ class NoticeController extends Controller
     //create notice
     public function createNotice(Request $request)
     {
-        // if (!Auth::check()) {
-        //     return response()->json([
-        //         'message' => 'Unauthorized. Please log in.',
-        //     ], 401);
-        // }
 
         // Validate request
         $request->validate([
             'notice' => 'required|string|max:500',
+            'file' => 'nullable|mimes:png,jpg,jpeg|max:2048',
         ]);
+
+        $filename = null;
+
+        if($request->file('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+        }
 
         // Create notice
         $notice = NoticeFromAdmin::create([
             'notice' => $request->input('notice'),
+            'file' => $filename,
+
         ]);
 
         // Notify all users

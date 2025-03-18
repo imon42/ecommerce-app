@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class NoticeFromAdmin extends Model
 {
     protected $fillable =[
-        'notice'
+        'notice',
+        'file'
     ];
 
     protected $hidden =[
