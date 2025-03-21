@@ -23,6 +23,7 @@ const Dashboard = () => {
     //state manage;
     const [notice, setNotice] = useState({ notice: "" });
     const [allNotice, setAllNotice] = useState([]);
+    const [file, setFile] = useState(null);
 
     //get all notice from db;
     const getNotice = async () => {
@@ -42,32 +43,39 @@ const Dashboard = () => {
     const handleNoticeChange = (event) => {
         setNotice({
             ...notice,
-            image : event?.target?.files?.[0],
             [event.target.name]: event.target.value,
-
         });
+    };
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
     };
 
     //Notice create function;
     const handleNotice = async (event) => {
         event.preventDefault();
+
+        const formData = new FormData();
+        formData.append("notice", notice.notice);
+        formData.append("file", file);
+
         try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/api/create-notice",
-                notice,{
+                formData,
+                {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 }
             );
-            console.log( response?.data.notice );
+            console.log(response?.data.notice);
 
             if (response?.status === 201) {
                 setAllNotice((prevNtc) => [...prevNtc, response?.data?.notice]);
             }
 
-            setNotice({ notice: ""});
-
+            setNotice({ notice: "" });
         } catch (error) {
             console.log("notice create failed");
         }
@@ -146,7 +154,7 @@ const Dashboard = () => {
                         type="file"
                         name="file"
                         accept="image/*"
-                        onChange={handleNoticeChange}
+                        onChange={handleFileChange}
                     />
                 </FormControl>
                 <Button colorScheme="blue" type="submit" marginTop={5}>
